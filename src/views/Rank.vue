@@ -2,7 +2,7 @@
   <div class="rank">
     <div class="rank-wrapper">
       <ScrollView>
-        <ul class="scrollViewwrapper">
+        <ul>
           <li>
             <h3 class="group-title">官方榜</h3>
             <ul class="normal-group">
@@ -13,7 +13,7 @@
               >
                 <div class="rank-left">
                   <img v-lazy="item.coverImgUrl" alt="" />
-                  <p>04-21</p>
+                  <p>{{ upTime(item.updateTime) }}</p>
                 </div>
                 <div class="rank-right">
                   <p v-for="obj in item.songs" :key="obj.id">
@@ -33,7 +33,7 @@
               >
                 <div class="rank-top">
                   <img v-lazy="item.coverImgUrl" alt="" />
-                  <p>04-21</p>
+                  <p>{{ upTime(item.updateTime) }}</p>
                 </div>
                 <div class="rank-bottom">
                   <p>{{ item.name }}</p>
@@ -51,10 +51,10 @@
 </template>
 
 <script>
-import ScrollView from "../components/common/ScrollView";
-import { getRankId, getPlayList } from "../api/index";
+import ScrollView from '../components/common/ScrollView'
+import { getRankId, getPlayList } from '../api/index'
 export default {
-  name: "Rank",
+  name: 'Rank',
   components: {
     ScrollView
   },
@@ -62,11 +62,21 @@ export default {
     return {
       aRankInfo: [],
       bRankInfo: []
-    };
+    }
+  },
+  computed: {
+    upTime () {
+      return function (time) {
+        const date = new Date(time)
+        const m = date.getMonth() + 1
+        const d = date.getDate()
+        return `${m}-${d}`
+      }
+    }
   },
   methods: {
     selectedItem (id) {
-      this.$router.push(`/rank/detail/${id}/rank`)
+      this.$router.push(`/rank/detail/rank/${id}`)
     }
   },
   mounted () {
@@ -74,38 +84,38 @@ export default {
       .then(res => {
         res.slice(0, 4).forEach(element => {
           getPlayList({ id: element }).then(res => {
-            let item = {};
-            item.id = res.playlist.id;
-            item.coverImgUrl = res.playlist.coverImgUrl;
-            item.updateTime = res.playlist.updateTime;
-            let songs = [];
+            const item = {}
+            item.id = res.playlist.id
+            item.coverImgUrl = res.playlist.coverImgUrl
+            item.updateTime = res.playlist.updateTime
+            const songs = []
             res.playlist.tracks.slice(0, 3).forEach((ele, index) => {
-              let songItem = {};
-              songItem.index = index + 1;
-              songItem.name = ele.name;
-              songItem.id = ele.id;
-              songItem.singer = ele.ar[0].name;
-              songs.push(songItem);
-            });
-            item.songs = songs;
-            this.aRankInfo.push(item);
-          });
-        });
-        return res;
+              const songItem = {}
+              songItem.index = index + 1
+              songItem.name = ele.name
+              songItem.id = ele.id
+              songItem.singer = ele.ar[0].name
+              songs.push(songItem)
+            })
+            item.songs = songs
+            this.aRankInfo.push(item)
+          })
+        })
+        return res
       }).then(result => {
         result.slice(4).forEach(element => {
           getPlayList({ id: element }).then(res => {
-            let item = {};
-            item.id = res.playlist.id;
-            item.name = res.playlist.name;
-            item.coverImgUrl = res.playlist.coverImgUrl;
-            item.updateTime = res.playlist.updateTime;
-            this.bRankInfo.push(item);
-          });
-        });
-      });
+            const item = {}
+            item.id = res.playlist.id
+            item.name = res.playlist.name
+            item.coverImgUrl = res.playlist.coverImgUrl
+            item.updateTime = res.playlist.updateTime
+            this.bRankInfo.push(item)
+          })
+        })
+      })
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>

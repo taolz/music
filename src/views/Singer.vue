@@ -68,17 +68,17 @@ export default {
   methods: {
     _keyDown (index) {
       this.currentIndex = index
-      let offsetY = this.groupsTop[index]
+      const offsetY = this.groupsTop[index]
       this.$refs.scrollView.scrollTo(0, -offsetY)
     },
     touchstart (e) {
-      let index = parseInt(e.target.dataset.index)
+      const index = parseInt(e.target.dataset.index)
       this._keyDown(index)
       this.beginOffsetY = e.touches[0].pageY
     },
     touchmove (e) {
       this.moveOffsetY = e.touches[0].pageY
-      let offsetY = (this.moveOffsetY - this.beginOffsetY) / e.target.offsetHeight
+      const offsetY = (this.moveOffsetY - this.beginOffsetY) / e.target.offsetHeight
       let index = parseInt(e.target.dataset.index) + Math.floor(offsetY)
       if (index < 0) {
         index = 0
@@ -88,7 +88,7 @@ export default {
       this._keyDown(index)
     },
     switchSinger (id) {
-      this.$router.push(`/singer/detail/${id}/singer`)
+      this.$router.push(`/singer/detail/singer/${id}`)
     }
   },
   computed: {
@@ -105,8 +105,8 @@ export default {
       this.keys = result.keys
       this.list = result.list
     }).catch((err) => {
-      console.log(err);
-    });
+      console.log(err)
+    })
   },
   mounted () {
     this.$refs.scrollView.scrolling((y) => {
@@ -118,12 +118,12 @@ export default {
       }
       // 中间
       for (let i = 0; i < this.groupsTop.length - 1; i++) {
-        let preTop = this.groupsTop[i]
-        let nextTop = this.groupsTop[i + 1]
+        const preTop = this.groupsTop[i]
+        const nextTop = this.groupsTop[i + 1]
         if (-y >= preTop && -y <= nextTop) {
           this.currentIndex = i
           // 1.用下一组标题的偏移位 + 当前滚动出去的偏移位
-          let diffOffsetY = nextTop + y
+          const diffOffsetY = nextTop + y
           let fixTitleOffsetY = 0
           // 2.判断计算的结果是否是 0 ~ 分组标题高度的值
           if (diffOffsetY >= 0 && diffOffsetY <= this.fixTitleHeight) {
@@ -187,9 +187,7 @@ export default {
         }
         .group-item {
           display: flex;
-          // justify-content: flex-start;
           align-items: center;
-
           padding: 10px 20px;
           border-bottom: 1px solid #ccc;
           img {
@@ -203,8 +201,6 @@ export default {
             @include font_color();
             margin-left: 20px;
             font-weight: bold;
-            //   // display: flex;
-            //   // align-items: center;
           }
         }
       }

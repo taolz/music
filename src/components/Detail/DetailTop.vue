@@ -21,7 +21,7 @@ export default {
     changeMask (opacity) {
       this.$refs.mask.style.opacity = opacity
     }
-  },
+  }
 }
 </script>
 
@@ -33,6 +33,7 @@ export default {
   overflow: hidden;
   img {
     width: 100%;
+    transform: translateY(-20%);
   }
   .mask {
     position: absolute;

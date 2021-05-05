@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import Header from '../Header/Header';
+import Header from '../Header/Header'
 export default {
   name: 'SubHeader',
   components: {
@@ -29,8 +29,8 @@ export default {
       type: String,
       default: '',
       required: true
-    },
-  },
+    }
+  }
 }
 </script>
 
@@ -51,8 +51,7 @@ export default {
     text-align: center;
     line-height: 100px;
     @include no-wrap();
-    // @include font_size($font_medium);
-    font-size: 28px;
+    @include font_size($font_medium);
   }
 }
 </style>

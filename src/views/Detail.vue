@@ -3,7 +3,7 @@
     <SubHeader :title="playlist.name"></SubHeader>
     <DetailTop :path="playlist.coverImgUrl" ref="top"></DetailTop>
     <div class="bottom">
-      <ScrollView ref="scrollView">
+      <ScrollView>
         <DetailBottom :playlist="playlist.tracks"></DetailBottom>
       </ScrollView>
     </div>
@@ -11,12 +11,12 @@
 </template>
 
 <script>
-import SubHeader from '../components/Detail/DetailHeader';
-import DetailTop from '../components/Detail/DetailTop';
-import DetailBottom from '../components/Detail/DetailBottom';
-import ScrollView from '../components/common/ScrollView';
+import SubHeader from '../components/Detail/DetailHeader'
+import DetailTop from '../components/Detail/DetailTop'
+import DetailBottom from '../components/Detail/DetailBottom'
+import ScrollView from '../components/common/ScrollView'
 
-import { getPlayList, getAlbum, getArtistsSongs, getTopList } from '../api/index';
+import { getPlayList, getAlbum, getArtistsSongs } from '../api/index'
 
 export default {
   name: 'Detail',
@@ -65,35 +65,21 @@ export default {
           console.log(err)
         })
     } else if (this.$route.params.type === 'rank') {
-      getTopList({ idx: this.$route.params.id })
+      getPlayList({ id: this.$route.params.id })
         .then((data) => {
           this.playlist = {
             name: data.playlist.name,
-            coverImgUrl: data.playlist.creator.backgroundUrl,
+            coverImgUrl: data.playlist.coverImgUrl,
             tracks: data.playlist.tracks
           }
         })
         .catch((err) => {
           console.log(err)
         })
+    } else {
+      console.log(this.$route)
     }
-  },
-  // mounted () {
-  //   let defaultHeight = this.$refs.top.$el.offsetHeight
-  //   this.$refs.scrollview.scrolling((offsetY) => {
-  //     if (offsetY < 0) {
-  //       let scale = Math.abs(offsetY) / defaultHeight
-  //       this.$refs.top.changeMask(scale)
-  //       /*
-  //       注意点: 高斯模糊效果是非常消耗性能的, 不推荐在移动端中使用
-  //               如果非要在移动端中使用, 那么建议只设置一次
-  //       * */
-  //     } else {
-  //       let scale = 1 + offsetY / defaultHeight
-  //       this.$refs.top.$el.style.transform = `scale(${scale})`
-  //     }
-  //   })
-  // }
+  }
 }
 </script>
 

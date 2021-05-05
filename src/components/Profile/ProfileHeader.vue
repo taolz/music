@@ -28,13 +28,13 @@
 </template>
 
 <script>
-import Header from '../Header/Header';
-import { removeLocalStorage } from '../../tools/tools';
-import { mapActions, mapGetters } from 'vuex';
+import Header from '../Header/Header'
+import { removeLocalStorage } from '../../tools/tools'
+import { mapActions, mapGetters } from 'vuex'
 export default {
   name: 'ProfileHeader',
   components: {
-    Header,
+    Header
   },
   data () {
     return {
@@ -43,7 +43,7 @@ export default {
       actions: [{
         name: '退出账号',
         subname: '将账号从此设备登出'
-      }],
+      }]
     }
   },
   methods: {
@@ -60,7 +60,10 @@ export default {
     onSelect (item) {
       removeLocalStorage('userInfo')
       removeLocalStorage('cookie')
-      this.show = false;
+      removeLocalStorage('searchHistory')
+      removeLocalStorage('historyList')
+      removeLocalStorage('favoriteList')
+      this.show = false
       this.$toast({
         message: '已退出，正在跳转',
         duration: 500
@@ -69,7 +72,6 @@ export default {
     },
     toCancel () {
       this.show = false
-
     },
     toClickOverlay () {
       this.show = false
@@ -87,11 +89,9 @@ export default {
         this.active = true
       } else {
         this.active = false
-
       }
-
     }
-  },
+  }
 }
 </script>
 

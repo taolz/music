@@ -24,9 +24,10 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
-import modeType from "../../store/modeType";
-import { formartTime } from '../../tools/tools.js';
+import { mapGetters, mapActions } from 'vuex'
+import modeType from '../../store/modeType'
+import { formartTime } from '../../tools/tools'
+
 export default {
   name: 'PlayerBottom',
   methods: {
@@ -46,28 +47,6 @@ export default {
     next () {
       this.setCurrentIndex(this.currentIndex + 1)
     },
-    favorite () {
-      this.setFavoriteSong(this.currentSong)
-    },
-    isFavorite (song) {
-      let result = this.favoriteList.find((currentValue) => {
-        console.log(currentValue.id === song.id);
-        return currentValue.id === song.id
-      })
-      return result !== undefined
-    },
-    progressClick (e) {
-      // 计算进度条位置
-      let normalLeft = this.$refs.progressBar.offsetLeft // 默认点距离左边的距离
-      let eventLeft = e.pageX // 点击处距离左边的距离
-      let clickLeft = eventLeft - normalLeft
-      let progressWidth = this.$refs.progressBar.offsetWidth
-      let value = clickLeft / progressWidth
-      this.$refs.progressLine.style.width = value * 100 + '%'
-      // 计算从什么位置开始播放
-      let currentTime = this.totalTime * value
-      this.setCurrentTime(currentTime)
-    },
     mode () {
       if (this.modeType === modeType.loop) {
         this.setModeType(modeType.one)
@@ -76,6 +55,27 @@ export default {
       } else if (this.modeType === modeType.random) {
         this.setModeType(modeType.loop)
       }
+    },
+    favorite () {
+      this.setFavoriteSong(this.currentSong)
+    },
+    isFavorite (song) {
+      const result = this.favoriteList.find((currentValue) => {
+        return currentValue.id === song.id
+      })
+      return result !== undefined
+    },
+    progressClick (e) {
+      // 计算进度条位置
+      const normalLeft = this.$refs.progressBar.offsetLeft // 默认点距离左边的距离
+      const eventLeft = e.pageX // 点击处距离左边的距离
+      const clickLeft = eventLeft - normalLeft
+      const progressWidth = this.$refs.progressBar.offsetWidth
+      const value = clickLeft / progressWidth
+      this.$refs.progressLine.style.width = value * 100 + '%'
+      // 计算从什么位置开始播放
+      const currentTime = this.totalTime * value
+      this.setCurrentTime(currentTime)
     }
   },
   computed: {
@@ -108,17 +108,17 @@ export default {
       }
     },
     totalTime (newValue, oldValue) {
-      let time = formartTime(newValue)
+      const time = formartTime(newValue)
       this.$refs.eleTotalTime.innerHTML = time.minute + ':' + time.second
     },
     currentTime (newValue, oldValue) {
       // 格式化时间
-      let time = formartTime(newValue)
+      const time = formartTime(newValue)
       this.$refs.eleCurrentTime.innerHTML = time.minute + ':' + time.second
       // 进度
-      let value = newValue / this.totalTime * 100
+      const value = newValue / this.totalTime * 100
       this.$refs.progressLine.style.width = value + '%'
-    },
+    }
   },
   props: {
     totalTime: {
@@ -130,8 +130,8 @@ export default {
       type: Number,
       default: 0,
       required: true
-    },
-  },
+    }
+  }
 }
 </script>
 
@@ -150,8 +150,7 @@ export default {
     justify-content: space-between;
     align-items: center;
     span {
-      // @include font_size($font_samll);
-      font-size: 30px;
+      @include font_size($font_samll);
       @include font_color();
     }
     .progress-bar {
@@ -171,8 +170,8 @@ export default {
           background: #fff;
           position: absolute;
           left: 100%;
-          top: -50%;
-          // transform: translateY(-50%);
+          top: 50%;
+          transform: translateY(-50%);
         }
       }
     }
@@ -180,7 +179,7 @@ export default {
   .bottom-controll {
     width: 80%;
     margin: 0 auto;
-    padding: 50px 70px;
+    padding: 50px 100px;
     display: flex;
     justify-content: space-between;
     align-items: center;

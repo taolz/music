@@ -1,7 +1,7 @@
 // 格式化时间
 export const formartTime = (time) => {
   // 2.得到两个时间之间的差值(秒)
-  let differSecond = time
+  const differSecond = time
   // 3.利用相差的总秒数 / 每一天的秒数 = 相差的天数
   let day = Math.floor(differSecond / (60 * 60 * 24))
   day = day >= 10 ? day : '0' + day
@@ -31,7 +31,7 @@ export const getRandomIntInclusive = (min, max) => {
 export const setLocalStorage = (key, value) => {
   window.localStorage.setItem(key, JSON.stringify(value))
 }
-export const getLocalStorage = (key, value) => {
+export const getLocalStorage = (key) => {
   return JSON.parse(window.localStorage.getItem(key))
 }
 export const removeLocalStorage = (key) => {

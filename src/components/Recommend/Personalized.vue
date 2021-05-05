@@ -55,13 +55,12 @@ export default {
       num = Number(num)
       if (!num) {
         this.isShow = false
-        return
       } else if (num >= 0 && num < 10000) {
         return num
       } else if (num >= 10000 && num < 100000000) {
         return Math.trunc(num / 10000) + ' 万'
       } else {
-        let numb = (Math.trunc(num / 1000000)) / 100
+        const numb = (Math.trunc(num / 1000000)) / 100
         return numb + ' 亿'
       }
     }
@@ -79,11 +78,11 @@ export default {
     height: 84px;
     line-height: 84px;
     @include bg_sub_color();
+    border-bottom: 1px solid #ccc;
     padding: 10px 20px 0;
     h3 {
-      // @include font_size($font_large);
+      @include font_size($font_large);
       position: relative;
-      font-size: 30px;
       font-weight: bold;
       @include font_color();
       &::after {
@@ -120,8 +119,7 @@ export default {
       p {
         @include clamp(2);
         @include font_color();
-        // @include font_size($font_medium_s);
-        font-size: 22px;
+        @include font_size($font_medium_s);
         text-align: center;
         margin-top: 10px;
       }

@@ -8,11 +8,11 @@
 </template>
 
 <script>
-import ProfileHeader from '../components/Profile/ProfileHeader';
-import ProfileInfo from '../components/Profile/ProfileInfo';
-import ProfileBottom from '../components/Profile/ProfileBottom';
-import { getLocalStorage } from '../tools/tools';
-import { likelist, getSongDetail, getSongUrl } from "../api/index";
+import ProfileHeader from '../components/Profile/ProfileHeader'
+import ProfileInfo from '../components/Profile/ProfileInfo'
+import ProfileBottom from '../components/Profile/ProfileBottom'
+import { getLocalStorage } from '../tools/tools'
+import { likelist, getSongDetail, getSongUrl } from '../api/index'
 
 export default {
   name: 'Profile',
@@ -30,7 +30,7 @@ export default {
   },
   created () {
     // 取出 cookie 里的用户信息
-    this.userInfo = getLocalStorage("userInfo")
+    this.userInfo = getLocalStorage('userInfo')
   },
   mounted () {
     // 获取我的喜欢里前50首
@@ -39,9 +39,9 @@ export default {
     ).then(data => getSongUrl({ id: data.join(',') })
     ).then((data) => {
       // 处理获取的歌曲id和播放地址
-      let songUrlObj = []
+      const songUrlObj = []
       data.data.forEach((ele) => {
-        let songUrlitem = {}
+        const songUrlitem = {}
         songUrlitem.ids = ele.id
         songUrlitem.url = ele.url
         songUrlObj.push(songUrlitem)
@@ -53,10 +53,10 @@ export default {
       return getSongDetail({ ids: this.songIds.join(',') })
     }).then((data) => {
       // 存储歌曲信息
-      let songsList = []
+      const songsList = []
       // 歌曲详情数据处理
       data.songs.forEach((ele) => {
-        let songObj = {}
+        const songObj = {}
         songObj.ids = ele.id
         songObj.name = ele.name
         songObj.picUrl = ele.al.picUrl
@@ -65,13 +65,13 @@ export default {
       })
 
       // 合并歌曲对象
-      let newSongsObj = []
+      const newSongsObj = []
       songsList.forEach((ele, index) => {
         if (ele.ids === this.songs[index].ids) {
-          let newSongsItem = Object.assign(ele, this.songs[index])
+          const newSongsItem = Object.assign(ele, this.songs[index])
           newSongsObj.push(newSongsItem)
         } else {
-          console.log('歌曲id不相等');
+          console.log('歌曲id不相等')
         }
       })
       this.songs = newSongsObj

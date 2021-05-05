@@ -9,9 +9,7 @@
       <img v-lazy="item.picUrl" alt="" />
       <div>
         <h3>{{ item.name }}</h3>
-        <p>
-          {{ item.singer }}
-        </p>
+        <p>{{ item.singer }}</p>
       </div>
     </li>
   </ul>
@@ -36,8 +34,7 @@ export default {
     selectMusic (id) {
       this.setFullScreen(true)
       this.setSongDetail([id])
-    },
-
+    }
   }
 }
 </script>
@@ -64,18 +61,17 @@ export default {
     div {
       width: 70%;
       h3 {
-        // @include font_size($font_large);
+        @include font_size($font_large);
         @include font_color();
         @include no-wrap();
-        font-size: 28px;
         font-weight: bold;
       }
       p {
-        // @include font_size($font_samll);
+        @include font_size($font_samll);
         @include font_color();
         @include no-wrap();
+        opacity: 0.6;
         margin-top: 10px;
-        font-size: 24px;
       }
     }
   }

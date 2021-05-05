@@ -1,72 +1,72 @@
 <template>
-  <div class="account">
-    <Header class="header">
-      <template #left
-        ><div class="header-left" @click.stop="back"></div
-      ></template>
-      <template #center><p class="title">登录</p></template>
-    </Header>
-    <div class="login">
-      <div class="login-wrapper">
-        <div class="left-top-login">LOGIN</div>
-        <div class="welcome">欢迎回来！</div>
-      </div>
-      <div class="input-content">
-        <div class="input-item">
-          <label class="title" for="account">账号</label>
-          <input
-            type="tel"
-            id="account"
-            placeholder="请输入手机号码"
-            v-model="account"
-          />
+  <transition appear>
+    <div class="account">
+      <Header class="header">
+        <template #left>
+          <div class="header-left" @click.stop="back"></div>
+        </template>
+        <template #center><p class="title">登录</p></template>
+      </Header>
+      <div class="login">
+        <div class="login-wrapper">
+          <div class="left-top-login">LOGIN</div>
+          <div class="welcome">欢迎回来！</div>
         </div>
-        <div class="input-item">
-          <label class="title" for="password">密码</label>
-          <input
-            type="password"
-            id="password"
-            placeholder="请输入密码"
-            v-model="password"
-          />
+        <div class="input-content">
+          <div class="input-item">
+            <label class="title" for="account">账号</label>
+            <input
+              type="tel"
+              id="account"
+              placeholder="请输入手机号码"
+              v-model="account"
+            />
+          </div>
+          <div class="input-item">
+            <label class="title" for="password">密码</label>
+            <input
+              type="password"
+              id="password"
+              placeholder="请输入密码"
+              v-model="password"
+            />
+          </div>
         </div>
-      </div>
-      <div class="btn-box">
-        <a href="javascript:;" class="btn" @click="login">
-          <p>登录</p>
-        </a>
-        <p class="tip">tips: 请使用手机号码登录</p>
+        <div class="btn-box">
+          <a href="javascript:;" class="btn" @click="login">
+            <p>登录</p>
+          </a>
+          <p class="tip">tips: 请使用手机号码登录</p>
+        </div>
       </div>
     </div>
-  </div>
+  </transition>
 </template>
 
 <script>
-import Header from '../components/Header/Header';
-import { accoutLogin } from '../api/index';
-import { setLocalStorage, getLocalStorage } from '../tools/tools';
+import Header from '../components/Header/Header'
+import { accoutLogin } from '../api/index'
+import { setLocalStorage, getLocalStorage } from '../tools/tools'
 export default {
   name: 'Account',
   data () {
     return {
-      // account: '',
-      // password: ''
-      account: '17857027677',
-      password: '20neteaseMusic..'
+      account: '',
+      password: ''
     }
   },
   components: {
-    Header,
+    Header
   },
   methods: {
     back () {
       this.$router.go(-1)
     },
     async login () {
-      this.$toast.className = "toast"
-      let { account, password } = this
+      this.$toast.className = 'toast'
+      const { account, password } = this
       // 前端验证
-      let phoneReg = /^1(3|4|5|6|7|8|9)\d{9}$/
+      const phoneReg = /^1(3|4|5|6|7|8|9)\d{9}$/
       if (!account) {
         this.$toast.fail('手机号码不能为空')
       } else if (!phoneReg.test(account)) {
@@ -75,7 +75,7 @@ export default {
         this.$toast.fail('密码不能为空')
       }
 
-      let result = await accoutLogin({ phone: account, password })
+      const result = await accoutLogin({ phone: account, password: password })
       if (result.code === 200) {
         this.$toast.success('登录成功，正在跳转')
         setLocalStorage('userInfo', result.profile)
@@ -87,7 +87,7 @@ export default {
         this.$toast.fail('账号或密码错误')
       }
     }
-  },
+  }
 }
 </script>
 
@@ -177,5 +177,23 @@ export default {
       text-align: center;
     }
   }
+}
+.v-enter {
+  transform: translateX(100%);
+}
+.v-enter-to {
+  transform: translateX(0%);
+}
+.v-enter-active {
+  transition: transform 1s;
+}
+.v-leave {
+  transform: translateX(0%);
+}
+.v-leave-to {
+  transform: translateX(100%);
+}
+.v-leave-active {
+  transition: transform 1s;
 }
 </style>

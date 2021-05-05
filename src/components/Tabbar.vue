@@ -30,14 +30,10 @@ export default {
   width: 100%;
   height: 84px;
   @include bg_sub_color();
-  /*position: relative;*/
-  /*z-index: 999;*/
   .item {
     span {
       line-height: 84px;
-      // @include font_size($font_medium);
-      font-size: 26px;
-      font-weight: bold;
+      @include font_size($font_medium);
       @include font_color();
     }
     &.router-link-active {

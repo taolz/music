@@ -2,7 +2,9 @@
   <div id="app">
     <MainHeader></MainHeader>
     <Tabbar></Tabbar>
-    <router-view />
+    <keep-alive include="Singer,Search">
+      <router-view></router-view>
+    </keep-alive>
     <Player></Player>
   </div>
 </template>
@@ -10,7 +12,7 @@
 <script>
 import MainHeader from '@/components/Header/MainHeader'
 import Tabbar from '@/components/Tabbar'
-import Player from './views/Player'
+import Player from '@/views/Player'
 export default {
   name: 'App',
   components: {

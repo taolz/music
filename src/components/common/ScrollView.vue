@@ -18,7 +18,7 @@ export default {
       default: true
     },
     data: {
-      //外部传过来的数据，主要是监听数据的变化，刷新容器的计算
+      // 外部传过来的数据，主要是监听数据的变化，刷新容器的计算
       type: Array,
       default: null
     }
@@ -56,14 +56,6 @@ export default {
       this.scroll.on('scroll', function () {
         fn(this.y)
       })
-    }
-  },
-  watch: {
-    data () {  //监听外面数据的变化，重新计算 better-scroll
-      setTimeout(() => {
-        this.refresh()
-      }, 20)
-      this.scroll.refresh()
     }
   },
   beforeDestroy () {

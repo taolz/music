@@ -3,7 +3,7 @@
     <div class="mini-player" v-show="isShowMiniPlayer">
       <div class="player-wrapper">
         <div class="player-left" @click="showNormalPlayer">
-          <img :src="currentSong.picUrl" alt="" ref="miniplayer" />
+          <img :src="currentSong.picUrl" ref="cd" />
           <div class="player-title">
             <h3>{{ currentSong.name }}</h3>
             <p>{{ currentSong.singer }}</p>
@@ -19,8 +19,8 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex';
-import Velocity from 'velocity-animate';
+import { mapActions, mapGetters } from 'vuex'
+import Velocity from 'velocity-animate'
 import 'velocity-animate/velocity.ui'
 export default {
   name: 'MiniPlayer',
@@ -28,14 +28,14 @@ export default {
     ...mapActions([
       'setFullScreen',
       'setMiniPlayer',
-      'setIsPlaying',
-      'setListPlayer'
+      'setListPlayer',
+      'setIsPlaying'
     ]),
     showList () {
-      this.setListPlayer('true')
+      this.setListPlayer(true)
     },
     showNormalPlayer () {
-      this.setFullScreen(true);
+      this.setFullScreen(true)
       this.setMiniPlayer(false)
     },
     enter (el, done) {
@@ -56,8 +56,6 @@ export default {
     ...mapGetters([
       'isShowMiniPlayer',
       'isPlaying',
-
-      'isShowListPlayer',
       'currentSong'
     ])
   },
@@ -65,13 +63,13 @@ export default {
     isPlaying (newValue, oldValue) {
       if (newValue) {
         this.$refs.play.classList.add('active')
-        this.$refs.miniplayer.classList.add('active')
+        this.$refs.cd.classList.add('active')
       } else {
         this.$refs.play.classList.remove('active')
-        this.$refs.miniplayer.classList.remove('active')
+        this.$refs.cd.classList.remove('active')
       }
     }
-  },
+  }
 }
 </script>
 
@@ -96,25 +94,26 @@ export default {
       padding-left: 30px;
       width: 50%;
       img {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        margin-right: 20px;
         animation: sport 10s linear infinite paused;
         &.active {
           animation-play-state: running;
         }
-        height: 100px;
-        width: 100px;
-        border-radius: 50%;
-        margin-right: 20px;
       }
       .player-title {
         display: flex;
         flex-direction: column;
         justify-content: center;
+        @include no-wrap();
         h3 {
-          font-size: 30px;
+          @include font_size($font_medium);
           @include font_color();
         }
         p {
-          font-size: 26px;
+          @include font_size($font_medium_s);
           @include font_color();
         }
       }

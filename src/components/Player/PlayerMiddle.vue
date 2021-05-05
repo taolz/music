@@ -26,10 +26,15 @@
 <script>
 import 'swiper/css/swiper.css'
 import { Swiper, SwiperSlide } from 'vue-awesome-swiper'
-import ScrollView from '../common/ScrollView';
-import { mapGetters, mapActions } from 'vuex';
+import ScrollView from '../common/ScrollView'
+import { mapGetters } from 'vuex'
 export default {
   name: 'PlayerMiddle',
+  components: {
+    Swiper,
+    SwiperSlide,
+    ScrollView
+  },
   data () {
     return {
       swiperOptions: {
@@ -51,18 +56,14 @@ export default {
       type: Number,
       default: 0,
       required: true
-    },
-  },
-  components: {
-    Swiper,
-    SwiperSlide,
-    ScrollView
+    }
   },
   computed: {
     ...mapGetters([
       'isPlaying',
       'currentSong',
-      'currentLyric'
+      'currentLyric',
+      'currentIndex'
     ])
   },
   methods: {
@@ -76,8 +77,8 @@ export default {
       if (lineNum < 0) {
         return this.currentLineNum
       }
-      let reslut = this.currentLyric[lineNum] // 当前时间是否有歌词
-      if (reslut === undefined || reslut === '') {
+      const result = this.currentLyric[lineNum + ''] // 当前时间是否有歌词
+      if (result === undefined || result === '') {
         lineNum--
         return this.getActiveLineNum(lineNum)
       } else {
@@ -95,11 +96,11 @@ export default {
     },
     currentTime (newValue, oldValue) {
       // 高亮歌词
-      let lineNum = Math.floor(newValue)
+      const lineNum = Math.floor(newValue)
       this.currentLineNum = this.getActiveLineNum(lineNum)
       // 歌词滚动
-      let currentLyricTop = document.querySelector('.lyric .active').offsetTop
-      let lyricHeight = this.$refs.lyric.$el.offsetHeight
+      const currentLyricTop = document.querySelector('.lyric .active').offsetTop
+      const lyricHeight = this.$refs.lyric.$el.offsetHeight
       if (currentLyricTop > lyricHeight / 2) {
         this.$refs.scrollView.scrollTo(0, lyricHeight / 2 - currentLyricTop, 100)
       } else {
@@ -112,7 +113,7 @@ export default {
         return
       }
     }
-  },
+  }
 }
 </script>
 
@@ -145,24 +146,26 @@ export default {
     }
     p {
       text-align: center;
-      // @include font_size($font_medium);
+      @include font_size($font_medium);
       @include font_color();
       margin-top: 50px;
-      font-size: 26px;
     }
   }
   .lyric {
     li {
+      box-sizing: border-box;
       text-align: center;
-      font-size: 28px;
+      @include font_size($font_medium);
+      @include font_color();
+      padding: 10px 0;
       &:last-of-type {
         padding-bottom: 60%;
       }
       &.active {
         color: #fff;
-        font-size: 34px;
+        @include font_size($font_large);
         font-weight: bold;
-        // padding: 5px 0;
+        padding: 5px 0;
       }
     }
   }

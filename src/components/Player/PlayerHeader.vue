@@ -16,8 +16,8 @@
 </template>
 
 <script>
-import Header from '../Header/Header';
-import { mapActions, mapGetters } from 'vuex';
+import Header from '../Header/Header'
+import { mapActions, mapGetters } from 'vuex'
 export default {
   name: 'PlayerHeader',
   components: {
@@ -26,19 +26,18 @@ export default {
   methods: {
     ...mapActions([
       'setFullScreen',
-      'setMiniPlayer',
+      'setMiniPlayer'
     ]),
     hiddenNormalPlayer () {
-      this.setFullScreen(false);
+      this.setFullScreen(false)
       this.setMiniPlayer(true)
     }
   },
   computed: {
     ...mapGetters([
-      'songs',
       'currentSong'
     ])
-  },
+  }
 }
 </script>
 
@@ -53,18 +52,15 @@ export default {
     @include bg_img('~@/assets/images/more');
   }
   .header-title {
-    padding: 10px 0;
     display: flex;
     flex-direction: column;
-    // align-items: center;
-    justify-content: space-around;
+    align-items: center;
+    justify-content: center;
     width: 60%;
     color: #fff;
-    font-weight: bold;
     text-align: center;
-    // @include no-wrap();
-    // @include font_size($font_medium);
-    font-size: 28px;
+    @include no-wrap();
+    @include font_size($font_medium);
   }
 }
 </style>

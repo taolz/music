@@ -8,9 +8,9 @@
 </template>
 
 <script>
-import SongListItem from './SongListItem'
+import SongListItem from '../common/SongListItem'
 export default {
-  name: 'SongList',
+  name: 'NewSongs',
   components: {
     SongListItem
   },
@@ -20,7 +20,7 @@ export default {
       default: () => [],
       required: true
     }
-  },
+  }
 }
 </script>
 
@@ -35,11 +35,11 @@ export default {
     height: 84px;
     line-height: 84px;
     @include bg_sub_color();
+    border-bottom: 1px solid #ccc;
     padding: 10px 20px 0;
     h3 {
       position: relative;
-      // @include font_size($font_large);
-      font-size: 30px;
+      @include font_size($font_large);
       font-weight: bold;
       @include font_color();
       &::after {

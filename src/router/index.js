@@ -13,8 +13,7 @@ const Profile = () => import('@/views/Profile')
 Vue.use(VueRouter)
 
 const routes = [
-  // { path: '/', redirect: '/recommend' },
-  { path: '/', redirect: '/search' },
+  { path: '/', redirect: '/recommend' },
   {
     path: '/recommend',
     name: 'Recommend',
@@ -62,7 +61,8 @@ const routes = [
 ]
 
 const router = new VueRouter({
-  mode: 'history',
+  // mode: 'history',
+  mode: 'hash',
   base: process.env.BASE_URL,
   routes
 })

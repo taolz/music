@@ -1,8 +1,16 @@
 <template>
   <swiper :options="swiperOptions" class="banner">
     <swiper-slide v-for="item in banners" :key="item.bannerId" class="item">
-      <!-- TODO -->
-      <a :href="item.url">
+      <div v-if="item.url === undefined" @click="selectMusic(item.id)">
+        <img :src="item.pic" alt="" />
+        <span
+          class="typeTitle"
+          :style="{ 'background-color': item.titleColor }"
+        >
+          {{ item.typeTitle }}
+        </span>
+      </div>
+      <a :href="item.url" v-else>
         <img :src="item.pic" alt="" />
         <span
           class="typeTitle"
@@ -18,6 +26,7 @@
 
 <script>
 import 'swiper/css/swiper.css'
+import { mapActions } from 'vuex'
 import { Swiper, SwiperSlide } from 'vue-awesome-swiper'
 export default {
   name: 'Banner',
@@ -50,6 +59,16 @@ export default {
   components: {
     Swiper,
     SwiperSlide
+  },
+  methods: {
+    ...mapActions([
+      'setFullScreen',
+      'setSongDetail'
+    ]),
+    selectMusic (id) {
+      this.setFullScreen(true)
+      this.setSongDetail([id])
+    }
   }
 }
 </script>

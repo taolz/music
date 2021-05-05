@@ -1,6 +1,6 @@
 <template>
   <transition :css="false" @enter="enter" @leave="leave">
-    <div class="list-player" v-show="this.isShowListPlayer">
+    <div class="list-player" v-show="isShowListPlayer">
       <div class="player-wrapper">
         <div class="player-top">
           <div class="top-left">
@@ -23,12 +23,20 @@
                 @click="selectMusic(index)"
               >
                 <div class="item-left">
-                  <div class="play" ref="play"></div>
+                  <div
+                    class="item-play"
+                    @click.stop="play"
+                    v-show="currentIndex === index"
+                  ></div>
                   <p>{{ value.name }}</p>
                 </div>
                 <div class="item-right">
-                  <div class="item-favorite"></div>
-                  <div class="item-del" @click="del(index)"></div>
+                  <div
+                    class="item-favorite"
+                    @click.stop="favorite(value)"
+                    :class="{ active: isFavorite(value) }"
+                  ></div>
+                  <div class="item-del" @click.stop="del(index)"></div>
                 </div>
               </li>
             </ul>
@@ -43,23 +51,25 @@
 </template>
 
 <script>
-import ScrollView from '../common/ScrollView';
-import Velocity from 'velocity-animate';
+import ScrollView from '../common/ScrollView'
+import Velocity from 'velocity-animate'
 import 'velocity-animate/velocity.ui'
-import { mapActions, mapGetters } from 'vuex';
-import modeType from "../../store/modeType";
+import { mapGetters, mapActions } from 'vuex'
+import modeType from '../../store/modeType'
 
 export default {
   name: 'ListPlayer',
   components: {
-    ScrollView,
+    ScrollView
   },
   methods: {
     ...mapActions([
+      'setIsPlaying',
       'setModeType',
       'setListPlayer',
       'setDelSong',
-      'setCurrentIndex'
+      'setCurrentIndex',
+      'setFavoriteSong'
     ]),
     mode () {
       if (this.modeType === modeType.loop) {
@@ -91,6 +101,18 @@ export default {
       Velocity(el, 'transition.shrinkOut', { duration: 500 }, function () {
         done()
       })
+    },
+    play () {
+      this.setIsPlaying(!this.isPlaying)
+    },
+    favorite (value) {
+      this.setFavoriteSong(value)
+    },
+    isFavorite (song) {
+      const result = this.favoriteList.find(function (currentValue) {
+        return currentValue.id === song.id
+      })
+      return result !== undefined
     }
   },
   computed: {
@@ -98,19 +120,19 @@ export default {
       'isPlaying',
       'isShowListPlayer',
       'modeType',
-      'songs'
+      'songs',
+      'currentIndex',
+      'favoriteList'
     ])
   },
   watch: {
-    /*
     isPlaying (newValue, oldValue) {
-        if (newValue) {
-          this.$refs.play.classList.add('active')
-        } else {
-          this.$refs.play.classList.remove('active')
-        }
-      },
-      */
+      if (newValue) {
+        this.$refs.play.classList.add('active')
+      } else {
+        this.$refs.play.classList.remove('active')
+      }
+    },
     modeType (newValue, oldValue) {
       if (newValue === modeType.loop) {
         this.$refs.mode.classList.remove('random')
@@ -128,7 +150,7 @@ export default {
         this.$refs.scrollView.refresh()
       }
     }
-  },
+  }
 }
 </script>
 
@@ -140,8 +162,7 @@ export default {
   left: 0;
   bottom: 0;
   width: 100%;
-  // @include bg_sub_color();
-  background-color: #dcdcdc;
+  @include bg_sub_color();
   .player-wrapper {
     .player-top {
       width: 100%;
@@ -158,17 +179,17 @@ export default {
           height: 56px;
           margin-right: 20px;
           &.loop {
-            @include bg_img('../../assets/images/loop');
+            @include bg_img('../../assets/images/small_loop');
           }
           &.one {
-            @include bg_img('../../assets/images/one');
+            @include bg_img('../../assets/images/small_one');
           }
           &.random {
-            @include bg_img('../../assets/images/shuffle');
+            @include bg_img('../../assets/images/small_shuffle');
           }
         }
         p {
-          font-size: 28px;
+          @include font_size($font_medium_s);
           @include font_color();
         }
       }
@@ -183,6 +204,15 @@ export default {
     .player-middle {
       height: 700px;
       overflow: hidden;
+      ul {
+        &.active {
+          .item {
+            .item-play {
+              @include bg_img('../../assets/images/small_pause');
+            }
+          }
+        }
+      }
       .item {
         height: 100px;
         border-top: 1px solid #ccc;
@@ -195,18 +225,15 @@ export default {
           width: 70%;
           display: flex;
           align-items: center;
-          .play {
+          .item-play {
             width: 56px;
             height: 56px;
             margin-right: 20px;
-            @include bg_img('../../assets/images/play');
-            &.active {
-              @include bg_img('../../assets/images/pause');
-            }
+            @include bg_img('../../assets/images/small_play');
           }
           p {
             width: 80%;
-            font-size: 26px;
+            @include font_size($font_medium_s);
             @include font_color();
             @include no-wrap();
           }
@@ -217,7 +244,10 @@ export default {
           .item-favorite {
             width: 56px;
             height: 56px;
-            @include bg_img('../../assets/images/favorite');
+            @include bg_img('../../assets/images/small_un_favorite');
+            &.active {
+              @include bg_img('../../assets/images/small_favorite');
+            }
           }
           .item-del {
             width: 52px;
@@ -236,7 +266,7 @@ export default {
       p {
         text-align: center;
         color: #fff;
-        font-size: 28px;
+        @include font_size($font_medium);
       }
     }
   }

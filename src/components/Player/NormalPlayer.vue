@@ -17,12 +17,13 @@
 </template>
 
 <script>
-import PlayerHeader from "./PlayerHeader";
-import PlayerMiddle from "./PlayerMiddle";
-import PlayerBottom from "./PlayerBottom";
+import PlayerHeader from './PlayerHeader'
+import PlayerMiddle from './PlayerMiddle'
+import PlayerBottom from './PlayerBottom'
 import { mapGetters, mapActions } from 'vuex'
-import Velocity from 'velocity-animate';
+import Velocity from 'velocity-animate'
 import 'velocity-animate/velocity.ui'
+
 export default {
   name: 'NormalPlayer',
   components: {
@@ -33,7 +34,7 @@ export default {
   computed: {
     ...mapGetters([
       'isFullScreen',
-      'currentSong',
+      'currentSong'
     ])
   },
   methods: {
@@ -69,8 +70,8 @@ export default {
       type: Number,
       default: 0,
       required: true
-    },
-  },
+    }
+  }
 }
 </script>
 
@@ -91,8 +92,11 @@ export default {
     z-index: 999;
   }
   .player-bg {
-    // width: 100%;
-    // height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
     img {
       height: 100%;
       position: absolute;

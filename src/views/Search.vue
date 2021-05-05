@@ -9,9 +9,15 @@
         type="text"
         placeholder="搜索歌曲、歌手、专辑"
         v-model="keywords"
-        @blur="search()"
+        v-throttle="search"
       />
-      <!-- v-throttle="search" -->
+      <div class="search-box-right" v-show="keywords !== ''">
+        <img
+          @click.stop="keywords = ''"
+          src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHBhdGggZmlsbC1ydWxlPSJldmVub2RkIiBmaWxsPSIjOTk5ODk5IiBkPSJNMTMuMzc5IDEybDEwLjMzOCAxMC4zMzdhLjk3NS45NzUgMCAxIDEtMS4zNzggMS4zNzlMMTIuMDAxIDEzLjM3OCAxLjY2MyAyMy43MTZhLjk3NC45NzQgMCAxIDEtMS4zNzgtMS4zNzlMMTAuNjIzIDEyIC4yODUgMS42NjJBLjk3NC45NzQgMCAxIDEgMS42NjMuMjg0bDEwLjMzOCAxMC4zMzhMMjIuMzM5LjI4NGEuOTc0Ljk3NCAwIDEgMSAxLjM3OCAxLjM3OEwxMy4zNzkgMTIiLz48L3N2Zz4="
+          alt=""
+        />
+      </div>
     </div>
     <div class="search-suggest" v-show="keywords !== ''">
       <ScrollView>
@@ -60,39 +66,39 @@
 </template>
 
 <script>
-import ScrollView from '../components/common/ScrollView';
-import { getSearchHot, getSearchList } from '../api/index';
-import { setLocalStorage, getLocalStorage } from '../tools/tools';
+import ScrollView from '../components/common/ScrollView'
+import { getSearchList, getSearchHot } from '../api/index'
 import { mapActions } from 'vuex'
+import { setLocalStorage, getLocalStorage } from '../tools/tools'
+
 export default {
   name: 'Search',
   data () {
     return {
       keywords: '',
-      hots: [],
       songs: [],
+      hots: [],
       searchHistory: []
     }
   },
   components: {
-    ScrollView,
+    ScrollView
   },
   methods: {
-    search () {
-      if (this.keywords === '') {
-        return
-      }
-      getSearchList({ 'keywords': this.keywords }).then((result) => {
-        // console.log(result.result.songs);
-        this.songs = result.result.songs
-      }).catch((err) => {
-        console.log(err);
-      })
-    },
     ...mapActions([
       'setFullScreen',
       'setSongDetail'
     ]),
+    search () {
+      if (this.keywords === '') {
+        return
+      }
+      getSearchList({ keywords: this.keywords }).then((result) => {
+        this.songs = result.result.songs
+      }).catch((err) => {
+        console.log(err)
+      })
+    },
     selectMusic (id) {
       this.setFullScreen(true)
       this.setSongDetail([id])
@@ -118,10 +124,32 @@ export default {
     getSearchHot().then((data) => {
       data.result.hots.forEach(element => {
         this.hots.push(element.first)
-      });
+      })
     }).catch((err) => {
-      console.log(err);
-    });
+      console.log(err)
+    })
+    if (getLocalStorage('searchHistory') === undefined || getLocalStorage('searchHistory') === null) {
+      return
+    }
+    this.searchHistory = getLocalStorage('searchHistory')
+  },
+  directives: {
+    throttle: {
+      inserted: function (el, obj) {
+        let timerId = null // 定时器
+        let flag = true // 防抖
+        el.addEventListener('input', function () {
+          if (!flag) return
+          flag = false // 开防抖
+          // 定时器存在就关闭上一个定时器，并重新开一个
+          timerId && clearTimeout(timerId)
+          timerId = setTimeout(function () {
+            flag = true
+            obj.value() // obj.value是传入自定义指令的参数
+          }, 1000)
+        })
+      }
+    }
   }
 }
 </script>
@@ -149,12 +177,20 @@ export default {
       margin-left: 20px;
     }
     input {
-      // outline: none;
       height: 60px;
       margin-left: 20px;
       border: none;
+      outline: none;
       background: transparent;
       @include font_size($font_medium);
+    }
+    .search-box-right {
+      position: fixed;
+      right: 40px;
+      img {
+        width: 30px;
+        height: 30px;
+      }
     }
   }
   .search-suggest {
@@ -198,9 +234,38 @@ export default {
         border: 1px solid #000;
         border-radius: 30px;
         padding: 0 20px;
-        margin: 10px 20px;
         @include font_color();
         @include font_size($font_medium_s);
+        margin: 10px 20px;
+      }
+    }
+  }
+  .search-history {
+    margin-top: 20px;
+    li {
+      padding: 20px;
+      box-sizing: border-box;
+      display: flex;
+      justify-content: space-between;
+      border-bottom: 1px solid #ccc;
+      .history-left {
+        display: flex;
+        align-items: center;
+        img {
+          width: 40px;
+          height: 40px;
+        }
+        p {
+          margin-left: 20px;
+          @include font_color();
+          @include font_size($font_medium_s);
+        }
+      }
+      .history-right {
+        img {
+          width: 30px;
+          height: 30px;
+        }
       }
     }
   }

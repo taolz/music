@@ -37,15 +37,15 @@
 </template>
 
 <script>
-import ScrollView from '../common/ScrollView';
-import SongListItem from '../Recommend/SongListItem';
-import { mapActions, mapGetters } from 'vuex';
+import ScrollView from '../common/ScrollView'
+import SongListItem from '../common/SongListItem'
+import { mapActions, mapGetters } from 'vuex'
 export default {
   name: 'ProfileBottom',
   data () {
     return {
       switchNum: 0,
-      isShow: true,
+      isShow: true
     }
   },
   components: {
@@ -57,7 +57,7 @@ export default {
       type: Array,
       default: () => { },
       required: true
-    },
+    }
   },
   methods: {
     ...mapActions([
@@ -66,7 +66,7 @@ export default {
     ]),
     selectAllMusic () {
       this.setFullScreen(true)
-      let ids = this.songs.map((item) => {
+      const ids = this.songs.map((item) => {
         return item.ids
       })
       this.setSongDetail(ids)
@@ -76,7 +76,7 @@ export default {
       this.isShow = !this.isShow
       if (num > 0) {
         this.$toast({
-          message: `注意：【历史记录】只显示此次您在该设备上播放的最新 30 首`,
+          message: '注意：【历史记录】只显示此次您在该设备上播放的最新 30 首',
           duration: 800,
           position: top
         })
@@ -100,7 +100,7 @@ export default {
       duration: 1800,
       position: top
     })
-  },
+  }
 }
 </script>
 

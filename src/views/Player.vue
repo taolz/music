@@ -4,8 +4,8 @@
       :totalTime="totalTime"
       :currentTime="currentTime"
     ></NormalPlayer>
-    <MiniPlayer @showList="showListPlayer"></MiniPlayer>
-    <ListPlayer ref="listPlayer"></ListPlayer>
+    <MiniPlayer></MiniPlayer>
+    <ListPlayer></ListPlayer>
     <audio
       :src="currentSong.url"
       ref="audio"
@@ -16,42 +16,19 @@
 </template>
 
 <script>
-import NormalPlayer from '../components/Player/NormalPlayer';
-import MiniPlayer from '../components/Player/MiniPlayer';
-import ListPlayer from '../components/Player/ListPlayer';
-import { mapGetters, mapActions } from 'vuex';
-import mode from '../store/modeType';
-import { getRandomIntInclusive, setLocalStorage, getLocalStorage } from "../tools/tools";
+import NormalPlayer from '../components/Player/NormalPlayer'
+import MiniPlayer from '../components/Player/MiniPlayer'
+import ListPlayer from '../components/Player/ListPlayer'
+import { mapGetters, mapActions } from 'vuex'
+import mode from '../store/modeType'
+import { getRandomIntInclusive, setLocalStorage, getLocalStorage } from '../tools/tools'
+
 export default {
   name: 'Player',
   components: {
     NormalPlayer,
     MiniPlayer,
     ListPlayer
-  },
-  methods: {
-    ...mapActions([
-      'setCurrentIndex',
-      'setFavoriteList',
-      'setHistorySong',
-      'setHistoryList'
-    ]),
-    showListPlayer () {
-      this.$refs.listPlayer.show()
-    },
-    timeupdate (e) {
-      this.currentTime = e.target.currentTime
-    },
-    end () {
-      if (this.modeType === mode.loop) {
-        this.setCurrentIndex(this.currentIndex + 1)
-      } else if (this.modeType === mode.one) {
-        this.$refs.audio.play()
-      } else if (this.modeType === mode.random) {
-        let index = getRandomIntInclusive(0, this.songs.length - 1)
-        this.setCurrentIndex(index)
-      }
-    }
   },
   computed: {
     ...mapGetters([
@@ -65,6 +42,27 @@ export default {
       'historyList'
     ])
   },
+  methods: {
+    ...mapActions([
+      'setCurrentIndex',
+      'setFavoriteList',
+      'setHistorySong',
+      'setHistoryList'
+    ]),
+    timeupdate (e) {
+      this.currentTime = e.target.currentTime
+    },
+    end () {
+      if (this.modeType === mode.loop) {
+        this.setCurrentIndex(this.currentIndex + 1)
+      } else if (this.modeType === mode.one) {
+        this.$refs.audio.play()
+      } else if (this.modeType === mode.random) {
+        const index = getRandomIntInclusive(0, this.songs.length - 1)
+        this.setCurrentIndex(index)
+      }
+    }
+  },
   data () {
     return {
       totalTime: 0,
@@ -73,15 +71,15 @@ export default {
   },
   watch: {
     isPlaying (newValue, oldValue) {
-      this.setHistorySong(this.currentSong)
       if (newValue) {
+        this.setHistorySong(this.currentSong)
         this.$refs.audio.play()
       } else {
         this.$refs.audio.pause()
       }
     },
     currentIndex () {
-      this.$refs.audio.oncanplay = () => {
+      this.$refs.audio.ondurationchange = () => {
         this.totalTime = this.$refs.audio.duration
         if (this.isPlaying) {
           this.setHistorySong(this.currentSong)
@@ -95,28 +93,26 @@ export default {
       this.$refs.audio.currentTime = newValue
     },
     favoriteList (newValue, oldValue) {
-      let value = Object.values(newValue)
-      setLocalStorage('favoriteList', value)
+      setLocalStorage('favoriteList', newValue)
     },
     historyList (newValue, oldValue) {
-      let value = Object.values(newValue)
-      setLocalStorage('historyList', value)
-    },
+      setLocalStorage('historyList', newValue)
+    }
   },
   created () {
-    let favoriteList = getLocalStorage('favoriteList');
+    const favoriteList = getLocalStorage('favoriteList')
     if (favoriteList === null) { return }
     this.setFavoriteList(favoriteList)
 
-    let historyList = getLocalStorage('historyList');
+    const historyList = getLocalStorage('historyList')
     if (historyList === null) { return }
     this.setHistoryList(historyList)
   },
   mounted () {
-    this.$refs.audio.oncanplay = () => {
+    this.$refs.audio.ondurationchange = () => {
       this.totalTime = this.$refs.audio.duration
     }
-  },
+  }
 }
 </script>
 
