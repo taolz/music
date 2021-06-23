@@ -100,6 +100,7 @@ export default {
       }
     }
   },
+  /*
   created () {
     getAllArtists().then((result) => {
       this.keys = result.keys
@@ -107,8 +108,14 @@ export default {
     }).catch((err) => {
       console.log(err)
     })
-  },
+  }, */
   mounted () {
+    getAllArtists().then((result) => {
+      this.keys = result.keys
+      this.list = result.list
+    }).catch((err) => {
+      console.log(err)
+    })
     this.$refs.scrollView.scrolling((y) => {
       this.scrollY = y
       // 处理第一个区域

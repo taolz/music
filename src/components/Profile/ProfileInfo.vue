@@ -24,8 +24,8 @@ export default {
       type: Object,
       default: () => { },
       required: true
-    },
-  },
+    }
+  }
 }
 </script>
 

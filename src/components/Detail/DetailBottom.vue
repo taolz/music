@@ -38,7 +38,7 @@ export default {
     },
     selectAllMusic () {
       this.setFullScreen(true)
-      let ids = this.playlist.map((item) => {
+      const ids = this.playlist.map((item) => {
         return item.id
       })
       this.setSongDetail(ids)

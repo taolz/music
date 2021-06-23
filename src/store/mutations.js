@@ -14,7 +14,7 @@ import {
   SET_FAVORITE_LIST,
   SET_HISTORY_SONG,
   SET_HISTORY_LIST
-} from './mutations-type';
+} from './mutations-type'
 
 export default {
   [SET_FULL_SCREEN] (state, flag) {
@@ -75,7 +75,7 @@ export default {
     state.curTime = time
   },
   [SET_FAVORITE_SONG] (state, song) {
-    let result = state.favoriteList.find(function (currentValue) {
+    const result = state.favoriteList.find(function (currentValue) {
       return currentValue.id === song.id
     })
     if (result === undefined) {
@@ -86,7 +86,7 @@ export default {
     state.favoriteList = list
   },
   [SET_HISTORY_SONG] (state, song) {
-    let result = state.historyList.find(function (currentValue) {
+    const result = state.historyList.find(function (currentValue) {
       return currentValue.id === song.id
     })
     if (result === undefined) {

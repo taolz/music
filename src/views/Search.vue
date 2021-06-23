@@ -120,7 +120,7 @@ export default {
       setLocalStorage('searchHistory', this.searchHistory)
     }
   },
-  created () {
+  mounted () {
     getSearchHot().then((data) => {
       data.result.hots.forEach(element => {
         this.hots.push(element.first)

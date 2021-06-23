@@ -99,7 +99,8 @@ export default {
       setLocalStorage('historyList', newValue)
     }
   },
-  created () {
+  // created () {
+  mounted () {
     const favoriteList = getLocalStorage('favoriteList')
     if (favoriteList === null) { return }
     this.setFavoriteList(favoriteList)
@@ -107,8 +108,8 @@ export default {
     const historyList = getLocalStorage('historyList')
     if (historyList === null) { return }
     this.setHistoryList(historyList)
-  },
-  mounted () {
+    /* },
+     mounted () { */
     this.$refs.audio.ondurationchange = () => {
       this.totalTime = this.$refs.audio.duration
     }

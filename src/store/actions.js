@@ -39,13 +39,13 @@ export default {
     commit(SET_MODE_TYPE, flag)
   },
   async setSongDetail ({ commit }, ids) {
-    let result = await getSongDetail({ ids: ids.join(',') })
-    let urls = await getSongUrl({ id: ids.join(',') })
-    let list = []
+    const result = await getSongDetail({ ids: ids.join(',') })
+    const urls = await getSongUrl({ id: ids.join(',') })
+    const list = []
     result.songs.forEach((value, i) => {
-      let obj = {}
+      const obj = {}
       for (let j = 0; j < urls.data.length; j++) {
-        let item = urls.data[j]
+        const item = urls.data[j]
         if (value.id === item.id) {
           obj.url = item.url
           break
@@ -54,7 +54,7 @@ export default {
       obj.id = value.id
       obj.name = value.name
       let singer = ''
-      value['ar'].forEach((item, index) => {
+      value.ar.forEach((item, index) => {
         if (index === 0) {
           singer = item.name
         } else {
@@ -62,14 +62,14 @@ export default {
         }
       })
       obj.singer = singer
-      obj.picUrl = value['al'].picUrl
+      obj.picUrl = value.al.picUrl
       list.push(obj)
     })
     commit(SET_SONG_DETAIL, list)
   },
   async getSongLyric ({ commit }, id) {
-    let result = await getSongLyric({ id: id })
-    let obj = parseLyric(result.lrc.lyric)
+    const result = await getSongLyric({ id: id })
+    const obj = parseLyric(result.lrc.lyric)
     commit(SET_SONG_LYRIC, obj)
   },
   setDelSong ({ commit }, index) {
@@ -96,29 +96,30 @@ export default {
 }
 // 格式化歌词
 function parseLyric (lrc) {
-  let lyrics = lrc.split('\n')
+  const lyrics = lrc.split('\n')
   // [00:00.000] 作曲 : 林俊杰
   // 1.定义正则表达式提取[00:00.000]
-  let reg1 = /\[\d*:\d*\.\d*\]/g
+  const reg1 = /\[\d*:\d*\.\d*\]/g
   // 2.定义正则表达式提取 [00
-  let reg2 = /\[\d*/i
+  const reg2 = /\[\d*/i
   // 3.定义正则表达式提取 :00
-  let reg3 = /\:\d*/i
+  // eslint-disable-next-line no-useless-escape
+  const reg3 = /\:\d*/i
   // 4.定义对象保存处理好的歌词
-  let lyricObj = {}
+  const lyricObj = {}
   lyrics.forEach(function (lyric) {
     // 1.提取时间
     let timeStr = lyric.match(reg1)
     if (!timeStr) { return }
     timeStr = timeStr[0]
     // 2.提取分钟
-    let minStr = timeStr.match(reg2)[0].substr(1)
+    const minStr = timeStr.match(reg2)[0].substr(1)
     // 3.提取秒钟
-    let secondStr = timeStr.match(reg3)[0].substr(1)
+    const secondStr = timeStr.match(reg3)[0].substr(1)
     // 4.合并时间, 将分钟和秒钟都合并为秒钟
-    let time = parseInt(minStr) * 60 + parseInt(secondStr)
+    const time = parseInt(minStr) * 60 + parseInt(secondStr)
     // 5.处理歌词
-    let text = lyric.replace(reg1, '').trim()
+    const text = lyric.replace(reg1, '').trim()
     // 6.保存数据
     lyricObj[time] = text
   })

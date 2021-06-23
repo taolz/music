@@ -3,8 +3,8 @@ import { Toast } from 'vant'
 
 // 全局配置
 const axios = $axios.create({
-  baseURL: 'http://127.0.0.1:3000/',
-  timeout: 5000,
+  baseURL: 'http://120.27.129.5:3000/',
+  timeout: 10000,
   withCredentials: true
 })
 

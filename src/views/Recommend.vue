@@ -57,7 +57,7 @@ export default {
       bannersList: []
     }
   },
-  created () {
+  mounted () {
     getBanner()
       .then((data) => {
         // this.dataList.push(data.banners)

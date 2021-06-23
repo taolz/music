@@ -31,7 +31,7 @@ export default {
       playlist: {}
     }
   },
-  created () {
+  mounted () {
     if (this.$route.params.type === 'personalized') {
       getPlayList({ id: this.$route.params.id })
         .then((data) => {
